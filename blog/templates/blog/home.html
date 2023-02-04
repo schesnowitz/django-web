@@ -2,8 +2,13 @@
 {% block content %}
 {% for post in posts %}
 <div class="card">
+    <img src="{{post.author.profile.image.url}}" class="rounded-circle img-thumbnail" alt="Cinque Terre" width="100"
+        height="100">
     <div class="card-body">
-        <h4>{{ post.title }}</h4>
+        <a href="{% url 'post-detail' post.id %}">
+
+            <h4>{{ post.title }}</h4>
+        </a>
         <p>By: {{ post.author }} on: {{post.date_posted }}</p>
         <br>
         <p>{{ post.content }}</p>
