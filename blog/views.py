@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 # from django.http import HttpResponse
 # for class based views... 
 from django.views.generic import (
@@ -11,7 +11,7 @@ from django.views.generic import (
 from django.urls import reverse_lazy
 from.models import Post
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-
+from django.contrib.auth.models import User
 
 # def home(request):
 
@@ -26,6 +26,20 @@ class PostListView(ListView):
     context_object_name = 'posts' # setting name for view as 
     # otherwise looks for the default which is object list
     ordering = ['-date_posted'] # (variable) ordering: list[str]
+    paginate_by = 2
+
+
+class UserPostListView(ListView):
+    model = Post
+    template_name = 'blog/home.html' 
+    context_object_name = 'posts' 
+
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Post.objects.filter(author=user).order_by('-date_posted')
+
 
 class PostDetailView(DetailView):
     model = Post
