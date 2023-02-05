@@ -55,6 +55,8 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 ''' post created but error -> No URL to redirect to.  
 Either provide a url or define a get_absolute_url method on the Model. 
 this is set in the model get_absolute_url to redirect to home, for example use success url'''
+
+
 class PostUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
     model = Post
     fields = ['title', 'content']
@@ -67,6 +69,8 @@ class PostUpdateView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
         if self.request.user == post.author:
             return True
         return False 
+
+
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     success_url = '/'
